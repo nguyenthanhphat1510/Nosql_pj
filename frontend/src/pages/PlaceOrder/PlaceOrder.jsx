@@ -9,21 +9,17 @@ import { selectLogin } from "../../store/loginSlice";
 const PlaceOrder = () => {
   // const navigate = useNavigate();
   const [deliveryInfo, setDeliveryInfo] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-    country: "",
-    phone: "",
+    recipientName: "",
+    phoneNumber: "",
+    shippingAddress: "",
   });
 
   const getTotalCartAmount = useSelector(selectTotalCartAmount);
   const cartItems = useSelector(selectCartItems);
   const loginState = useSelector(selectLogin);
   const userId = loginState.data?.user?._id;
+
+  // Handle function
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,11 +44,11 @@ const PlaceOrder = () => {
     // Tạo đối tượng orderData theo cấu trúc mà backend yêu cầu
     const orderData = {
       userId,
-      address: deliveryInfo,
       items: cartItems,
-      amount: (getTotalCartAmount + 30000).toString(), // chuyển tổng tiền thành chuỗi
       status: "pending", // trạng thái mặc định
+      address: deliveryInfo,
       payment: "cod",  // giả sử thanh toán bằng tiền mặt (cash on delivery)
+      amount: (getTotalCartAmount + 30000).toString(), // chuyển tổng tiền thành chuỗi
     };
 
     try {
@@ -73,41 +69,42 @@ const PlaceOrder = () => {
 
   return (
     <form className="place-order" onSubmit={placeOrder}>
-      <div className="container mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="container px-4 py-10 mx-auto">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           {/* Delivery Information */}
           <div>
-            <h2 className="text-2xl font-semibold mb-4">Delivery Information</h2>
+            <h2 className="mb-4 text-2xl font-semibold">Delivery Information</h2>
             <div className="grid grid-cols-2 gap-4">
               <input
                 type="text"
-                name="firstName"
-                placeholder="First name"
-                className="border rounded-md p-3"
-                value={deliveryInfo.firstName}
+                name="recipientName"
+                placeholder="Your name to order"
+                className="p-3 border rounded-md"
+                value={deliveryInfo.recipientName}
                 onChange={handleChange}
               />
               <input
                 type="text"
-                name="lastName"
-                placeholder="Last name"
-                className="border rounded-md p-3"
-                value={deliveryInfo.lastName}
+                name="phoneNumber"
+                placeholder="Your phone number"
+                className="p-3 border rounded-md"
+                value={deliveryInfo.phoneNumber}
                 onChange={handleChange}
               />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email address"
-                className="col-span-2 border rounded-md p-3"
-                value={deliveryInfo.email}
+              <textarea
+                name="shippingAddress"
+                placeholder="Your order address"
+                className="col-span-2 p-3 border rounded-md"
+                value={deliveryInfo.shippingAddress}
                 onChange={handleChange}
+                rows="4" // Số dòng mặc định
+                cols="50" // Độ rộng mặc định (có thể bỏ nếu dùng CSS)
               />
-              <input
+              {/* <input
                 type="text"
                 name="street"
                 placeholder="Street"
-                className="col-span-2 border rounded-md p-3"
+                className="col-span-2 p-3 border rounded-md"
                 value={deliveryInfo.street}
                 onChange={handleChange}
               />
@@ -115,7 +112,7 @@ const PlaceOrder = () => {
                 type="text"
                 name="city"
                 placeholder="City"
-                className="border rounded-md p-3"
+                className="p-3 border rounded-md"
                 value={deliveryInfo.city}
                 onChange={handleChange}
               />
@@ -123,7 +120,7 @@ const PlaceOrder = () => {
                 type="text"
                 name="state"
                 placeholder="State"
-                className="border rounded-md p-3"
+                className="p-3 border rounded-md"
                 value={deliveryInfo.state}
                 onChange={handleChange}
               />
@@ -131,7 +128,7 @@ const PlaceOrder = () => {
                 type="text"
                 name="zip"
                 placeholder="Zip code"
-                className="border rounded-md p-3"
+                className="p-3 border rounded-md"
                 value={deliveryInfo.zip}
                 onChange={handleChange}
               />
@@ -139,7 +136,7 @@ const PlaceOrder = () => {
                 type="text"
                 name="country"
                 placeholder="Country"
-                className="border rounded-md p-3"
+                className="p-3 border rounded-md"
                 value={deliveryInfo.country}
                 onChange={handleChange}
               />
@@ -147,26 +144,26 @@ const PlaceOrder = () => {
                 type="text"
                 name="phone"
                 placeholder="Phone"
-                className="col-span-2 border rounded-md p-3"
+                className="col-span-2 p-3 border rounded-md"
                 value={deliveryInfo.phone}
                 onChange={handleChange}
-              />
+              /> */}
             </div>
           </div>
 
           {/* Cart Totals */}
           <div>
-            <h2 className="text-2xl font-semibold mb-4">Cart Totals</h2>
-            <div className="border rounded-md p-6 bg-gray-50">
+            <h2 className="mb-4 text-2xl font-semibold">Cart Totals</h2>
+            <div className="p-6 border rounded-md bg-gray-50">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span>
                     {getTotalCartAmount !== undefined
                       ? new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(getTotalCartAmount)
+                        style: "currency",
+                        currency: "VND",
+                      }).format(getTotalCartAmount)
                       : "N/A"}
                   </span>
                 </div>
@@ -175,27 +172,27 @@ const PlaceOrder = () => {
                   <span>
                     {30000
                       ? new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(30000)
+                        style: "currency",
+                        currency: "VND",
+                      }).format(30000)
                       : "N/A"}
                   </span>
                 </div>
-                <div className="flex justify-between font-bold text-lg">
+                <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
                   <span>
                     {getTotalCartAmount !== undefined
                       ? new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(getTotalCartAmount + 30000)
+                        style: "currency",
+                        currency: "VND",
+                      }).format(getTotalCartAmount + 30000)
                       : "N/A"}
                   </span>
                 </div>
               </div>
               <button
                 type="submit"
-                className="w-full bg-orange-500 text-white font-semibold py-3 rounded-md hover:bg-orange-600 transition"
+                className="w-full py-3 font-semibold text-white transition bg-orange-500 rounded-md hover:bg-orange-600"
               >
                 PROCEED TO PAYMENT
               </button>

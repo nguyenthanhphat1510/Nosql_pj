@@ -13,6 +13,7 @@ import PlaceOrder from "./pages/PlaceOrder/PlaceOrder.jsx";
 import OrderDetail from "./pages/OrderDetail/OrderDetail.jsx";
 import Dtdd from "./pages/Dtdd/Dtdd.jsx";
 import Laptop from "./pages/Laptop/Laptop.jsx";
+import MyOrders from "./pages/MyOrder/MyOrder.jsx";
 
 
 const App = () => {
@@ -25,7 +26,8 @@ const App = () => {
           <Route path="/product" element={<ProductDetaiil />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<PlaceOrder />} />
-          <Route path="/orderdetail" element={<OrderDetail />} />
+          <Route path="/orderDetail" element={<OrderDetail />} />
+          <Route path="/myOrders" element={<MyOrders />} />
           <Route path="/dtdd" element={<Dtdd />} />
           <Route path="/laptop" element={<Laptop />} />
         </Routes>

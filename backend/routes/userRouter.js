@@ -1,8 +1,10 @@
 import express from 'express';
-import { registerUser, loginUser } from '../controllers/userController.js';
+import { registerUser, loginUser, userList } from '../controllers/userController.js';
 
 
 const userRouter = express.Router();
+// Khoa code test API
+userRouter.get("/list", userList);
 
 userRouter.post("/register", registerUser);
 

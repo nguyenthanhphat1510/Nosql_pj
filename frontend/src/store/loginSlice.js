@@ -18,19 +18,22 @@ export const login = createAsyncThunk(
   }
 );
 
+const initialState = {
+  data: JSON.parse(localStorage.getItem('authData')) || null, // Restore auth data
+  loading: false,
+  error: null,
+};
+
 const loginSlice = createSlice({
   name: "login",
-  initialState: {
-    data: null, // lưu trữ dữ liệu response
-    loading: false,
-    error: null,
-  },
+  initialState,
   reducers: {
     // Ví dụ: Action để logout
     logout: (state) => {
       state.data = null;
       state.loading = false;
       state.error = null;
+      localStorage.removeItem('authData'); // Clear auth data on logout
     },
   },
   extraReducers: (builder) => {
@@ -44,6 +47,7 @@ const loginSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
+        localStorage.setItem('authData', JSON.stringify(action.payload)); // Save auth data
       })
       // Khi gọi API thất bại
       .addCase(login.rejected, (state, action) => {
@@ -59,7 +63,7 @@ export default loginSlice.reducer;
 // Trong loginSlice.js
 export const selectLogin = (state) => state.auth;
 
-// export const selectLogin = (state) => state.login 
+// export const selectLogin = (state) => state.login
 
 
 

@@ -3,6 +3,16 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 
+const userList = async (req, res) => {
+  try {
+    const users = await userModel.find();
+    res.status(200).json({ success: true, data: users });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 const loginUser = async (req, res) => {
   const {email, password} = req.body
   
@@ -26,7 +36,7 @@ const loginUser = async (req, res) => {
 };
 
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  return jwt.sign({_id: id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 };
 
 const registerUser = async (req, res) => {
@@ -74,4 +84,4 @@ const registerUser = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser };
+export { registerUser, loginUser, userList };
