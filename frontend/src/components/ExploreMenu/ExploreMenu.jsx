@@ -33,10 +33,10 @@
 
     return (
       <div>
-        <section className="flex flex-col md:flex-row items-center justify-between p-8 md:p-16 bg-white">
+        <section className="flex flex-col items-center justify-between p-8 bg-white md:flex-row md:p-16">
           {/* Text Content */}
           <div className="flex-1 space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-800">
+            <h1 className="text-4xl font-bold text-gray-800 md:text-6xl">
               Discover Your Next Smartphone
             </h1>
             <p className="text-gray-600 md:w-3/4">
@@ -45,7 +45,7 @@
               looking for the latest flagship model or a budget-friendly device,
               we have something for everyone.
             </p>
-            <button className="mt-4 px-6 py-2 text-white bg-red-600 rounded-full hover:bg-red-700">
+            <button className="px-6 py-2 mt-4 text-white bg-red-600 rounded-full hover:bg-red-700">
               Shop Now
             </button>
           </div>
@@ -55,40 +55,40 @@
             <img
               src={exploreMenuImage}
               alt="Food Dish"
-              className="w-full rounded-xl shadow-lg"
+              className="w-full shadow-lg rounded-xl"
             />
           </div>
         </section>
 
         {/* Categories Section */}
         <section className="p-8 shadow-md">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+          <h2 className="mb-4 text-3xl font-bold text-gray-800">
             Explore Our Shop
           </h2>
-          <p className="text-gray-600 mb-8">
+          <p className="mb-8 text-gray-600">
             Browse through our various categories to find the perfect smartphone
             that suits your needs.
           </p>
 
           {/* Thanh chứa nút LỌC và Select */}
-          <div className="mt-10 flex justify-end items-center mb-4 space-x-4">
+          <div className="flex items-center justify-end mt-10 mb-4 space-x-4">
             {/* Nút lọc */}
-            <button className="flex items-center px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-100">
-              <FontAwesomeIcon icon={faFilter} className="text-lg mr-2" />
-              <span className="text-md font-semibold">LỌC</span>
+            <button className="flex items-center px-4 py-2 text-blue-500 border border-blue-500 rounded-lg hover:bg-blue-100">
+              <FontAwesomeIcon icon={faFilter} className="mr-2 text-lg" />
+              <span className="font-semibold text-md">LỌC</span>
             </button>
 
             {/* Select danh mục động */}
             <select
-              className="p-2 w-64 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="w-64 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
               onChange={handleCategoryChange}
               value={selectedCategory}
             >
               <option value="" disabled>
                 Select a Category
               </option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.name} data-id={category.id}>
+              {categories.map((category, index) => (
+                <option key={category.id || index} value={category.name} data-id={category.id}>
                   {category.name}
                 </option>
               ))}

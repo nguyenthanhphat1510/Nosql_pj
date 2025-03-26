@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Navbar/Header/Header.jsx";
 import Home from "./pages/Home/Home.jsx";
@@ -15,8 +15,15 @@ import Dtdd from "./pages/Dtdd/Dtdd.jsx";
 import Laptop from "./pages/Laptop/Laptop.jsx";
 import MyOrders from "./pages/MyOrder/MyOrder.jsx";
 
-
 const App = () => {
+  // State để kiểm soát hiển thị LoginPopups
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+
+  // Hàm để đóng LoginPopups
+  const closeLoginPopup = () => {
+    setShowLoginPopup(false);
+  };
+
   return (
     <BrowserRouter>
       <div>
@@ -31,7 +38,8 @@ const App = () => {
           <Route path="/dtdd" element={<Dtdd />} />
           <Route path="/laptop" element={<Laptop />} />
         </Routes>
-        <LoginPopups />
+        {/* Hiển thị LoginPopups dựa trên state */}
+        {showLoginPopup && <LoginPopups onClose={closeLoginPopup} />}
         <Footer />
         <ToastContainer />
       </div>

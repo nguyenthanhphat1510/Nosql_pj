@@ -27,13 +27,12 @@ const ProductList = () => {
 
   return (
     <div id="menu" className="bg-white shadow-md">
-      <div className="mx-auto max-w-full px-4 py-16 sm:px-6 sm:py-10 lg:px-8">
+      <div className="max-w-full px-4 py-16 mx-auto sm:px-6 sm:py-10 lg:px-8">
         <h2 className="text-2xl font-semibold leading-tight">Product List</h2>
 
-        <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-10 
-                        sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:gap-x-8">
-          {allProducts.slice(0, visibleCount).map((product) => (
-            <ProductItem key={product.id} product={product} />
+        <div className="grid grid-cols-1 mt-5 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:gap-x-8">
+          {allProducts.slice(0, visibleCount).map((product, index) => (
+            <ProductItem key={product.id || index} product={product} />
           ))}
         </div>
 
@@ -41,13 +40,11 @@ const ProductList = () => {
           <div className="flex justify-center mt-8">
             <button
               onClick={loadMore}
-              className="relative inline-flex items-center justify-center
-                         px-4 py-2 border border-blue-500 text-blue-500 
-                         rounded-md hover:bg-blue-50 focus:outline-none"
+              className="relative inline-flex items-center justify-center px-4 py-2 text-blue-500 border border-blue-500 rounded-md hover:bg-blue-50 focus:outline-none"
             >
               <span>Xem thêm {remainingCount} Laptop</span>
               <svg
-                className="ml-2 w-4 h-4 text-blue-500"
+                className="w-4 h-4 ml-2 text-blue-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
