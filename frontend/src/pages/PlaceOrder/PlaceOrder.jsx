@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { selectTotalCartAmount, selectCartItems } from "../../store/cartSlice";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { selectTotalCartAmount, selectCartItems, removeFromCart } from "../../store/cartSlice";
 import { selectLogin } from "../../store/loginSlice";
 
 const PlaceOrder = () => {
-  // const navigate = useNavigate();
+  const dispatch = useDispatch(); // Khởi tạo hook useDispatch
+  const navigate = useNavigate(); // Khởi tạo hook useNavigate
   const [deliveryInfo, setDeliveryInfo] = useState({
     recipientName: "",
     phoneNumber: "",
@@ -18,8 +19,6 @@ const PlaceOrder = () => {
   const cartItems = useSelector(selectCartItems);
   const loginState = useSelector(selectLogin);
   const userId = loginState.data?.user?._id;
-
-  // Handle function
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,21 +46,23 @@ const PlaceOrder = () => {
       items: cartItems,
       status: "pending", // trạng thái mặc định
       address: deliveryInfo,
-      payment: "cod",  // giả sử thanh toán bằng tiền mặt (cash on delivery)
+      payment: "cod", // giả sử thanh toán bằng tiền mặt (cash on delivery)
       amount: (getTotalCartAmount + 30000).toString(), // chuyển tổng tiền thành chuỗi
     };
 
     try {
-      // Nếu cần token để xác thực, có thể lấy từ loginState (thí dụ: loginState.data.token)
-      // const token = loginState.data?.token || loginState.token;
       const response = await axios.post(
         "http://localhost:3000/api/order/create",
-        orderData,
+        orderData
       );
-      localStorage.removeItem('cartItems');
-      toast.success("Order placed successfully!");
 
-      // navigate("/myorders");
+      // Xóa từng sản phẩm khỏi giỏ hàng
+      cartItems.forEach((item) => {
+        dispatch(removeFromCart(item._id));
+      });
+
+      toast.success("Order placed successfully!");
+      navigate("/myOrders"); // Điều hướng đến trang "Đơn hàng của tôi"
     } catch (error) {
       toast.error(error.response?.data?.message || "Order failed. Please try again.");
     }
@@ -97,57 +98,9 @@ const PlaceOrder = () => {
                 className="col-span-2 p-3 border rounded-md"
                 value={deliveryInfo.shippingAddress}
                 onChange={handleChange}
-                rows="4" // Số dòng mặc định
-                cols="50" // Độ rộng mặc định (có thể bỏ nếu dùng CSS)
+                rows="4"
+                cols="50"
               />
-              {/* <input
-                type="text"
-                name="street"
-                placeholder="Street"
-                className="col-span-2 p-3 border rounded-md"
-                value={deliveryInfo.street}
-                onChange={handleChange}
-              />
-              <input
-                type="text"
-                name="city"
-                placeholder="City"
-                className="p-3 border rounded-md"
-                value={deliveryInfo.city}
-                onChange={handleChange}
-              />
-              <input
-                type="text"
-                name="state"
-                placeholder="State"
-                className="p-3 border rounded-md"
-                value={deliveryInfo.state}
-                onChange={handleChange}
-              />
-              <input
-                type="text"
-                name="zip"
-                placeholder="Zip code"
-                className="p-3 border rounded-md"
-                value={deliveryInfo.zip}
-                onChange={handleChange}
-              />
-              <input
-                type="text"
-                name="country"
-                placeholder="Country"
-                className="p-3 border rounded-md"
-                value={deliveryInfo.country}
-                onChange={handleChange}
-              />
-              <input
-                type="text"
-                name="phone"
-                placeholder="Phone"
-                className="col-span-2 p-3 border rounded-md"
-                value={deliveryInfo.phone}
-                onChange={handleChange}
-              /> */}
             </div>
           </div>
 

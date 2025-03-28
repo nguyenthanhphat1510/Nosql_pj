@@ -4,11 +4,12 @@ import { toast } from "react-toastify";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const OrderDetail = () => {
-  const [order, setOrder] = useState(null); // State để lưu thông tin đơn hàng
-  const [loading, setLoading] = useState(true); // State để quản lý trạng thái loading
+  const [order, setOrder] = useState(null); 
+  const [loading, setLoading] = useState(true); 
+  
   const navigate = useNavigate();
-  const location = useLocation(); // Lấy thông tin từ state khi navigate
-  const { orderId } = location.state || {}; // Lấy orderId từ state
+  const location = useLocation(); 
+  const { orderId } = location.state || {}; 
 
   useEffect(() => {
     const fetchOrderDetail = async () => {
@@ -85,7 +86,9 @@ const OrderDetail = () => {
           <h2 className="mb-2 text-2xl font-semibold">Thông tin giao hàng</h2>
           {address ? (
             <div>
-              <p><strong>Địa chỉ:</strong> {address.street}, {address.city}</p>
+              <p><strong>Người nhận:</strong> {address.recipientName || "Chưa cập nhật"}</p>
+              <p><strong>Số điện thoại:</strong> {address.phoneNumber || "Chưa cập nhật"}</p>
+              <p><strong>Địa chỉ:</strong> {address.shippingAddress || "Chưa cập nhật"}</p>
             </div>
           ) : (
             <p>Không có thông tin giao hàng.</p>
@@ -94,8 +97,8 @@ const OrderDetail = () => {
 
         {/* Tóm tắt đơn hàng */}
         <div className="mb-6">
-          <h2 className="mb-2 text-2xl font-semibold">Tóm tắt đơn hàng</h2>
-          <p>
+          {/* <h2 className="mb-2 text-2xl font-semibold">Tóm tắt đơn hàng</h2> */}
+          <p className="text-2xl text-red-700">
             <strong>Tổng tiền:</strong>{" "}
             {new Intl.NumberFormat("vi-VN", {
               style: "currency",

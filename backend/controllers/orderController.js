@@ -52,6 +52,10 @@ const createOrder = async (req, res) => {
       .populate("orderDetails")
       .populate("userId", "name email");
 
+    // Clear Cart after order
+
+
+
     res.status(201).json({ success: true, data: populatedOrder });
   } catch (error) {
     console.error("Error creating order:", error);
@@ -106,9 +110,10 @@ const listOrderByUser = async (req, res) => {
       return res.status(401).json({ success: false, message: "Không được phép" });
     }
 
-    // Lọc đơn hàng theo userId
+    // Lọc đơn hàng theo userId và sắp xếp theo ngày mới nhất
     const orders = await orderModel
       .find({ userId }) // Filter orders by userId
+      .sort({ date: -1 }) // Sắp xếp theo ngày giảm dần (mới nhất trước)
       .populate("orderDetails", "name price image"); // Populate orderDetails
 
     if (!orders || orders.length === 0) {

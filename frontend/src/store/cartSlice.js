@@ -13,19 +13,22 @@ const cartSlice = createSlice({
     addToCart: (state, action) => {
       const product = action.payload;
       const existingProduct = state.cartItems.find(item => item._id === product._id);
+
       if (existingProduct) {
-        existingProduct.quantity += 1;
+        // Cộng thêm số lượng từ action.payload.quantity
+        existingProduct.quantity += product.quantity || 1;
       } else {
-        // Cập nhật state bằng cách push sản phẩm mới
-        state.cartItems.push({ ...product, quantity: 1 });
+        // Thêm sản phẩm mới với số lượng từ action.payload.quantity
+        state.cartItems.push({ ...product, quantity: product.quantity || 1 });
       }
+
       // Lưu lại dữ liệu vào localStorage sau mỗi lần cập nhật
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
     removeFromCart: (state, action) => {
       const productId = action.payload;
       const productIndex = state.cartItems.findIndex(item => item._id === productId);
-    
+
       if (productIndex !== -1) {
         // Nếu số lượng > 1 thì chỉ giảm đi 1, nếu = 1 thì xoá sản phẩm khỏi giỏ hàng
         if (state.cartItems[productIndex].quantity > 1) {
@@ -36,8 +39,8 @@ const cartSlice = createSlice({
         localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
       }
     },
-    
-    
+
+
   },
 });
 
